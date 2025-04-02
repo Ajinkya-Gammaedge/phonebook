@@ -7,6 +7,7 @@ import {
   IconButton,
   Avatar,
   Box,
+  TableBody,
 } from '@mui/material';
 import {
   Edit as EditIcon,
@@ -69,13 +70,14 @@ const ContactCard = ({ contact, onEdit, onClick }) => {
         {<AdvancedImage cldImg={img}/>}
       </Avatar>
       <CardContent sx={{ flex: 1, py: 1, '&:last-child': { pb: 1 } }}>
-        <Typography variant="subtitle1" component="div">
+        <Typography variant="subtitle1">
           {contact.name}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {contact.phone}
-        </Typography>
+        
       </CardContent>
+      <CardContent><Typography variant="body2" color="text.secondary">
+          {contact.phone}
+        </Typography></CardContent>
       <Box sx={{ display: 'flex', pr: 1 }}>
         <IconButton size="small" onClick={handleBookmarkClick}>
           {contact.bookmarked ? <BookmarkIcon color="primary" /> : <BookmarkBorderIcon />}

@@ -17,6 +17,12 @@ import {
   Switch,
   FormGroup,
   FormControlLabel,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -76,31 +82,14 @@ function App() {
   const totalPages = Math.ceil(filteredContacts.length / contactsPerPage);
 
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
+    <Container maxWidth="lg" sx={{ py: 4 }}>
       <Paper elevation={0} sx={{ p: 3, bgcolor: 'background.default' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
           <Box sx={{ flexGrow: 1 }}>
             <Typography variant="h4" component="h1" sx={{ fontWeight: 500 }}>
               Phonebook
             </Typography>
-            <Typography variant="subtitle1" color="text.secondary">
-              {contacts.length} Contact{contacts.length !== 1 ? 's' : ''}
-            </Typography>
           </Box>
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={() => {
-              setSelectedContact(null);
-              setOpenForm(true);
-            }}
-            sx={{ borderRadius: 2 }}
-          >
-            Create contact
-          </Button>
-        </Box>
-
-        <Box sx={{ display: 'flex', gap: 2, mb: 3, alignItems: 'center' }}>
           <TextField
             fullWidth
             placeholder="Search contacts by name"
@@ -108,6 +97,7 @@ function App() {
             onChange={handleSearch}
             size="small"
             sx={{
+              m:3,
               '& .MuiOutlinedInput-root': {
                 borderRadius: 2,
               }
@@ -120,15 +110,27 @@ function App() {
               ),
             }}
           />
-          <IconButton 
+                    <IconButton 
             onClick={handleFilterClick}
             sx={{ 
               bgcolor: filterAnchorEl ? 'action.selected' : 'transparent',
-              borderRadius: 2
+              borderRadius: 2,
+              m:3,
             }}
           >
             <FilterIcon />
           </IconButton>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => {
+              setSelectedContact(null);
+              setOpenForm(true);
+            }}
+            sx={{ borderRadius: 2, p:2,m:2 , width: 500}}
+          >
+            Create contact
+          </Button>
         </Box>
 
         <Popover
@@ -176,11 +178,26 @@ function App() {
             )}
           </FormGroup>
         </Popover>
-
+        <Typography variant="subtitle1" color="text.secondary">
+              {contacts.length} Contact{contacts.length !== 1 ? 's' : ''}
+            </Typography>
         <Box sx={{ mb: 3 }}>
-          {currentContacts.map((contact) => (
+
+          <TableContainer component={Paper}>
+            <Table sx={{minWidth:650}} aria-label="phonebook label">
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{pl:5}}> Name</TableCell>
+
+                  <TableCell align='left'> Phone Number</TableCell>
+
+                </TableRow>
+              </TableHead>
+              <TableBody>
+              {currentContacts.map((contact, index) => 
+          (
             <ContactCard
-              key={contact.id}
+              key={index}
               contact={contact}
               onEdit={(contact) => {
                 setSelectedContact(contact);
@@ -192,13 +209,17 @@ function App() {
               }}
             />
           ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+
           {currentContacts.length === 0 && (
             <Typography color="text.secondary" align="center" sx={{ py: 4 }}>
               No contacts found
             </Typography>
           )}
         </Box>
-
+        
         {totalPages > 1 && (
           <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (

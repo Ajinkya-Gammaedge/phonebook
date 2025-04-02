@@ -20,7 +20,6 @@ const contactSlice = createSlice({
       if (index !== -1) {
         state.contacts[index] = action.payload;
         state.contacts.sort((a, b) => a.name.localeCompare(b.name));
-        
       }
     },
     deleteContact: (state, action) => {
