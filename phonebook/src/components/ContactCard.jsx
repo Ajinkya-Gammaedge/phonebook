@@ -15,6 +15,10 @@ import {
   BookmarkBorder as BookmarkBorderIcon,
 } from '@mui/icons-material';
 import { toggleBookmark, deleteContact } from '../store/contactSlice';
+import { Cloudinary } from '@cloudinary/url-gen';
+import { auto } from '@cloudinary/url-gen/actions/resize';
+import { autoGravity } from '@cloudinary/url-gen/qualifiers/gravity';
+import { AdvancedImage } from '@cloudinary/react';
 
 const ContactCard = ({ contact, onEdit, onClick }) => {
   const dispatch = useDispatch();
@@ -34,6 +38,14 @@ const ContactCard = ({ contact, onEdit, onClick }) => {
     onEdit(contact);
   };
 
+  const cld = new Cloudinary({ cloud: { cloudName: 'dmwaxokqb' } });
+    
+  const img = cld
+        .image('cld-sample-5')
+        .format('auto') 
+        .quality('auto')
+        .resize(auto().gravity(autoGravity()).width(500).height(500));
+
   return (
     <Card 
       onClick={() => onClick(contact)}
@@ -50,10 +62,11 @@ const ContactCard = ({ contact, onEdit, onClick }) => {
           width: 40, 
           height: 40, 
           m: 1,
-          bgcolor: contact.avatarColor
+
         }}
       >
-        {contact.name[0].toUpperCase()}
+        {/* {contact.name[0].toUpperCase()} */}
+        {<AdvancedImage cldImg={img}/>}
       </Avatar>
       <CardContent sx={{ flex: 1, py: 1, '&:last-child': { pb: 1 } }}>
         <Typography variant="subtitle1" component="div">

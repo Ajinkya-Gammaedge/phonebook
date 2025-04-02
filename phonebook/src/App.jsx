@@ -28,6 +28,7 @@ import ContactCard from './components/ContactCard';
 import ContactForm from './components/ContactForm';
 import ContactDetails from './components/ContactDetails';
 
+
 function App() {
   const dispatch = useDispatch();
   const { contacts, searchQuery, selectedLabel } = useSelector((state) => state.contacts);
@@ -165,7 +166,7 @@ function App() {
                   label="Filter by Label"
                   size="small"
                 >
-                  <MenuItem value="all">All</MenuItem>
+                  <MenuItem value="All">All</MenuItem>
                   <MenuItem value="Work">Work</MenuItem>
                   <MenuItem value="School">School</MenuItem>
                   <MenuItem value="Friends">Friends</MenuItem>
@@ -224,6 +225,8 @@ function App() {
         contact={selectedContact}
       />
 
+      {/* <AdvancedImage cldImg={img}/> */}
+
       <ContactDetails
         open={openDetails}
         onClose={() => {
@@ -237,3 +240,7 @@ function App() {
 }
 
 export default App;
+
+
+
+

@@ -15,17 +15,7 @@ import {
 } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { addContact, editContact } from '../store/contactSlice';
-
-// Function to generate a random color for avatar background
-const getRandomColor = () => {
-  const colors = [
-    '#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e',
-    '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50',
-    '#f1c40f', '#e67e22', '#e74c3c', '#95a5a6', '#f39c12',
-    '#d35400', '#c0392b', '#7f8c8d'
-  ];
-  return colors[Math.floor(Math.random() * colors.length)];
-};
+import { nanoid } from '@reduxjs/toolkit';
 
 const ContactForm = ({ open, onClose, contact = null }) => {
   const dispatch = useDispatch();
@@ -38,18 +28,18 @@ const ContactForm = ({ open, onClose, contact = null }) => {
     avatarColor: '',
     bookmarked: false,
   });
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (contact) {
       setFormData(contact);
     } else {
       setFormData({
-        id: Date.now().toString(),
+        id: nanoid(),
         name: '',
         phone: '',
         address: '',
         label: 'Work',
-        avatarColor: getRandomColor(),
         bookmarked: false,
       });
     }
@@ -65,13 +55,27 @@ const ContactForm = ({ open, onClose, contact = null }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (contact) {
-      dispatch(editContact(formData));
-    } else {
-      dispatch(addContact(formData));
+    const validationErrors = validateForm(formData);
+    if(Object.keys(validationErrors).length === 0){
+      if (contact) {
+        dispatch(editContact(formData));
+      } else {
+        dispatch(addContact(formData));
+      }
+    }else{
+      setErrors(validationErrors);
     }
     onClose();
   };
+
+  const validateForm = (data) =>
+    {
+      // let errors = {};
+      if(!data.name){
+        errors.name = "Name is required";
+      }
+      return errors;
+    }
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -84,7 +88,6 @@ const ContactForm = ({ open, onClose, contact = null }) => {
                 sx={{ 
                   width: 100, 
                   height: 100,
-                  bgcolor: formData.avatarColor,
                   fontSize: '2.5rem'
                 }}
               >
